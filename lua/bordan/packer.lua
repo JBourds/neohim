@@ -5,42 +5,49 @@ vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
     -- Packer can manage itself
-    use 'wbthomason/packer.nvim'
+    use('wbthomason/packer.nvim')
+    -- LSP
+    use {
+        "williamboman/mason.nvim",
+        "williamboman/mason-lspconfig.nvim",
+        "neovim/nvim-lspconfig",
+    }
+    -- Linting and Formatting
+    use('mfussenegger/nvim-lint')
+    use('stevearc/conform.nvim')
+
+    -- Autocompletion
+    use 'hrsh7th/nvim-cmp'
+    use 'hrsh7th/cmp-nvim-lsp'
+    use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/cmp-path'
+    use 'hrsh7th/cmp-cmdline'
+
+    -- Snippet engines
+    use 'hrsh7th/cmp-vsnip'
+    use 'hrsh7th/vim-vsnip'
+
+    -- Debugging: Not currently used
+    use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } }
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.8',
         -- or                            , branch = '0.1.x',
-        requires = { {'nvim-lua/plenary.nvim'} }
+        requires = { { 'nvim-lua/plenary.nvim' } }
     }
-    use ('rebelot/kanagawa.nvim')
-    use ('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
-    use ('nvim-treesitter/playground')
-    use {
-        "ThePrimeagen/harpoon",
-        branch = "harpoon2",
-        requires = { {"nvim-lua/plenary.nvim"} }
-    }
-    use ('mbbill/undotree')
-    use ('tpope/vim-fugitive')
-    use({
-        "jose-elias-alvarez/null-ls.nvim",
-        config = function()
-            require("null-ls").setup()
-        end,
-        requires = { "nvim-lua/plenary.nvim" },
-    })
-    use ('jay-babu/mason-null-ls.nvim')
 
-    use {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v3.x',
-        requires = {
-            --- Uncomment the two plugins below if you want to manage the language servers from neovim
-            {'williamboman/mason.nvim'},
-            {'williamboman/mason-lspconfig.nvim'},
-            {'neovim/nvim-lspconfig'},
-            {'hrsh7th/nvim-cmp'},
-            {'hrsh7th/cmp-nvim-lsp'},
-            {'L3MON4D3/LuaSnip'},
-        }
-    }
+    -- Colorscheme
+    use('rebelot/kanagawa.nvim')
+
+    -- Break code into AST for easier use by LSP
+    use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
+    use('nvim-treesitter/playground')
+
+    -- Undo
+    use('mbbill/undotree')
+
+    -- Git wrapper
+    use('tpope/vim-fugitive')
+
+    -- Markdown preview
+    use 'iamcco/markdown-preview.nvim'
 end)
