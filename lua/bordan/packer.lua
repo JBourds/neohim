@@ -19,13 +19,13 @@ return require('packer').startup(function(use)
     -- Autocompletion
     use 'hrsh7th/nvim-cmp'
     use 'hrsh7th/cmp-nvim-lsp'
-    use 'hrsh7th/cmp-buffer'
-    use 'hrsh7th/cmp-path'
+    -- use 'hrsh7th/cmp-buffer'
+    -- use 'hrsh7th/cmp-path'
     use 'hrsh7th/cmp-cmdline'
 
     -- Snippet engines
     use 'hrsh7th/cmp-vsnip'
-    use 'hrsh7th/vim-vsnip'
+    -- use 'hrsh7th/vim-vsnip'
 
     -- Debugging: Not currently used
     use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } }
@@ -49,5 +49,9 @@ return require('packer').startup(function(use)
     use('tpope/vim-fugitive')
 
     -- Markdown preview
-    use 'iamcco/markdown-preview.nvim'
+    -- install without yarn or npm
+    use({
+        "iamcco/markdown-preview.nvim",
+        run = function() vim.fn["mkdp#util#install"]() end,
+    })
 end)
