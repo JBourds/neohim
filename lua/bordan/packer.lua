@@ -35,6 +35,9 @@ return require('packer').startup(function(use)
         requires = { { 'nvim-lua/plenary.nvim' } }
     }
 
+    -- Hex editor
+    use('RaafatTurki/hex.nvim')
+
     -- Colorscheme
     use('rebelot/kanagawa.nvim')
 

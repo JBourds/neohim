@@ -19,7 +19,8 @@ vim.api.nvim_set_keymap('n', '<leader>mP', ':MarkdownPreviewStop<CR>', { noremap
 
 -- Very important
 vim.keymap.set("n", "<leader>l", function()
-    open_linkedin()
+	print('hi')
+	open_linkedin()
 end, { noremap = true })
 
 -- Move highlighted region under/over next line
@@ -28,8 +29,8 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 
 vim.keymap.set("n", "J", "mzJ`z")
 -- Quicker paging with cursor staying in place
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set("n", "<C-j>", "<C-d>zz")
+vim.keymap.set("n", "<C-k>", "<C-u>zz")
 
 -- Some kind of pattern matching?
 vim.keymap.set("n", "n", "nzzzv")
@@ -45,22 +46,27 @@ vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 -- Keymap for manual formatting
 vim.keymap.set({ "n", "v" }, "<leader>f", function()
-    require('conform').format({
-        lsp_fallback = true,
-        async = false,
-        timeout_ms = 500,
-    })
+	require('conform').format({
+		lsp_fallback = true,
+		async = false,
+		timeout_ms = 500,
+	})
 end, { desc = "Format file or range (in visual mode)" })
 
 -- Auto-format on save
 vim.api.nvim_create_autocmd("BufWritePre", {
-    callback = function(args)
-        require("conform").format({ bufnr = args.buf })
-    end,
+	callback = function(args)
+		require("conform").format({ bufnr = args.buf })
+	end,
 })
 
--- What do these do?
-vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
-vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")
-vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
-vim.keymap.set("n", "<leader>j", "<cmd>lprev<CR>zz")
+-- Hex dump commands
+vim.keymap.set({ "n" }, "<leader>dt", function()
+	require('hex').toggle()
+end)
+vim.keymap.set({ "n" }, "<leader>da", function()
+	require('hex').assemble()
+end)
+vim.keymap.set({ "n" }, "<leader>du", function()
+	require('hex').dump()
+end)
