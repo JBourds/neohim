@@ -2,13 +2,6 @@
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
--- Make going to the end of lines easier
-vim.keymap.set({ "n", "v" }, "9", "$")
-
--- I just prefer this to keyboard motions (test these on Mac)
-vim.keymap.set({ "n", "v" }, "<C-Left>", "B")
-vim.keymap.set({ "n", "v" }, "<C-Right>", "E")
-
 -- Because I fatfinger keep the shift key
 vim.keymap.set("n", ":W", ":w")
 vim.keymap.set("n", ":Q", ":q")
@@ -19,8 +12,8 @@ vim.api.nvim_set_keymap('n', '<leader>mP', ':MarkdownPreviewStop<CR>', { noremap
 
 -- Very important
 vim.keymap.set("n", "<leader>l", function()
-	print('hi')
-	open_linkedin()
+    print('Time to link in 😎')
+    open_linkedin()
 end, { noremap = true })
 
 -- Move highlighted region under/over next line
@@ -46,27 +39,27 @@ vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 -- Keymap for manual formatting
 vim.keymap.set({ "n", "v" }, "<leader>f", function()
-	require('conform').format({
-		lsp_fallback = true,
-		async = false,
-		timeout_ms = 500,
-	})
+    require('conform').format({
+        lsp_fallback = true,
+        async = false,
+        timeout_ms = 500,
+    })
 end, { desc = "Format file or range (in visual mode)" })
 
 -- Auto-format on save
 vim.api.nvim_create_autocmd("BufWritePre", {
-	callback = function(args)
-		require("conform").format({ bufnr = args.buf })
-	end,
+    callback = function(args)
+        require("conform").format({ bufnr = args.buf })
+    end,
 })
 
 -- Hex dump commands
 vim.keymap.set({ "n" }, "<leader>dt", function()
-	require('hex').toggle()
+    require('hex').toggle()
 end)
 vim.keymap.set({ "n" }, "<leader>da", function()
-	require('hex').assemble()
+    require('hex').assemble()
 end)
 vim.keymap.set({ "n" }, "<leader>du", function()
-	require('hex').dump()
+    require('hex').dump()
 end)

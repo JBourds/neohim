@@ -1,10 +1,6 @@
 function open_url(url)
-    local OS = vim.loop.os_uname().sysname
-    if OS == "OSX32" or OS == "OSX64" then
-        os.execute('open "" "' .. url .. '"')
-    else
-        os.execute('start "" "' .. url .. '"')
-    end
+    local command = string.format("xdg-open '%s'", url)
+    os.execute(command)
 end
 
 function open_linkedin()
