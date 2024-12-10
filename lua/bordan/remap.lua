@@ -1,6 +1,6 @@
 -- Set map leader to be easily accessible
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+vim.keymap.set("n", "<leader>pv", vim.cmd.Explore)
 
 -- Because I fatfinger keep the shift key
 vim.keymap.set("n", ":W", ":w")
