@@ -20,7 +20,7 @@ cmp.setup({
     }),
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
-        { name = 'vsnip' }, -- Uncomment for `vsnip` users
+        -- { name = 'vsnip' }, -- Uncomment for `vsnip` users
     }, {
         { name = 'buffer' },
     })
@@ -84,8 +84,8 @@ local custom_attach = function(client)
     map('n', '<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>')
     map('n', '<leader>ai', '<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
     map('n', '<leader>ao', '<cmd>lua vim.lsp.buf.outgoing_calls()<CR>')
-    map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()</CR>')
-    map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()</CR>')
+    map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
+    map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 end
 
 -- Diagnostic configuration

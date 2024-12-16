@@ -28,7 +28,7 @@ conform.setup({
     formatters_by_ft = {
         lua = { "stylua" },
         python = { "autopep8", "isort" }, -- or "autopep8" if preferred
-        rust = { "rustywind" },
+        rust = { "rustfmt" },
         json = { "prettier" },            -- Prettier for JSON files
         yaml = { "prettier" },            -- Prettier for YAML files (if preferred)
         toml = { "taplo" },               -- Taplo for TOML files
