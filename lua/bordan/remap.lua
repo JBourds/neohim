@@ -2,10 +2,6 @@
 vim.g.mapleader = " "
 vim.keymap.set("n", "<leader>pv", vim.cmd.Explore)
 
--- Because I fatfinger keep the shift key
-vim.keymap.set("n", ":W", ":w")
-vim.keymap.set("n", ":Q", ":q")
-
 -- Keybindings for Markdown preview
 vim.api.nvim_set_keymap('n', '<leader>mp', ':MarkdownPreview<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>mP', ':MarkdownPreviewStop<CR>', { noremap = true, silent = true })
@@ -36,7 +32,7 @@ vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
 vim.keymap.set("n", "Q", "<nop>")
-vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux new tmux-sessionizer<CR>")
 -- Keymap for manual formatting
 vim.keymap.set({ "n", "v" }, "<leader>f", function()
     require('conform').format({

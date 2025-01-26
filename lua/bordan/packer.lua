@@ -25,7 +25,7 @@ return require('packer').startup(function(use)
 
     -- Snippet engines
     use 'hrsh7th/cmp-vsnip'
-    -- use 'hrsh7th/vim-vsnip'
+    use 'hrsh7th/vim-vsnip'
 
     -- Debugging: Not currently used
     use { "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } }
@@ -42,7 +42,19 @@ return require('packer').startup(function(use)
     use('rebelot/kanagawa.nvim')
 
     -- Break code into AST for easier use by LSP
-    use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
+    use(
+        'nvim-treesitter/nvim-treesitter',
+        {
+            run = ':TSUpdate',
+            config = function()
+                require("nvim-treesitter.configs").setup({
+                    ensure_installed = { "markdown", "markdown_inline", "python", "rust", "json", "r", "rnoweb", "yaml", "latex", "csv" },
+                    highlight = { enable = true },
+                })
+            end
+        }
+
+    )
     use('nvim-treesitter/playground')
 
     -- Undo
@@ -55,6 +67,18 @@ return require('packer').startup(function(use)
     -- install without yarn or npm
     use({
         "iamcco/markdown-preview.nvim",
-        run = function() vim.fn["mkdp#util#install"]() end,
+    })
+    use({
+        "R-nvim/R.nvim",
+    })
+    use({
+        "R-nvim/cmp-r",
+        {
+            "hrsh7th/nvim-cmp",
+            config = function()
+                require("cmp").setup({ sources = { { name = "cmp_r" } } })
+                require("cmp_r").setup({})
+            end,
+        },
     })
 end)
