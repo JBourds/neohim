@@ -6,6 +6,14 @@ vim.keymap.set("n", "<leader>pv", vim.cmd.Explore)
 vim.api.nvim_set_keymap('n', '<leader>mp', ':MarkdownPreview<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>mP', ':MarkdownPreviewStop<CR>', { noremap = true, silent = true })
 
+-- Keybinding for wrapping current word or line in parentheses
+vim.keymap.set("n", "<leader>ww", "bi(<C-c>ea)<C-c>%i", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>wl", "^i(<C-c>$a)<C-c>%i", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>wW", "Bi(<C-c>Ea)<C-c>%i", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>wbw", "bi{<C-c>ea}<C-c>%i", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>wbW", "Bi{<C-c>Ea}<C-c>%i", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>wbl", "^i{<C-c>$a}<C-c>%i", { noremap = true, silent = true })
+
 -- Very important
 vim.keymap.set("n", "<leader>l", function()
     print('Time to link in 😎')
