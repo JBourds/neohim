@@ -14,6 +14,9 @@ vim.keymap.set("n", "<leader>wbw", "bi{<C-c>ea}<C-c>%i", { noremap = true, silen
 vim.keymap.set("n", "<leader>wbW", "Bi{<C-c>Ea}<C-c>%i", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>wbl", "^i{<C-c>$a}<C-c>%i", { noremap = true, silent = true })
 
+-- Easier macro replay
+vim.keymap.set("n", ".", "@@", { noremap = true, silent = true })
+
 -- Very important
 vim.keymap.set("n", "<leader>l", function()
     print('Time to link in 😎')
