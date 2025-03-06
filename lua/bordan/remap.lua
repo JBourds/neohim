@@ -20,8 +20,8 @@ vim.keymap.set("v", "<leader>d", "\"_d", { noremap = true, silent = true })
 -- "Fix" (delete into blackhole and replace with buffer)
 -- In normal mode, use heuristic to go to end of word
 -- In visual mode, do it on highlighted text
-vim.keymap.set("n", "f", "\"_cw<Esc>p", { noremap = true, silent = true })
-vim.replacement.set("v", "f", "\"_dp", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>f", "\"_cw<Esc>p", { noremap = true, silent = true })
+vim.keymap.set("v", "<leader>f", "\"_dp", { noremap = true, silent = true })
 
 -- Easier macro replay
 vim.keymap.set("n", ".", "@@", { noremap = true, silent = true })
