@@ -163,3 +163,4 @@ lspconfig.rust_analyzer.setup {
     on_attach = custom_attach
 }
 lspconfig.vale_ls.setup { on_attach = custom_attach }
+lspconfig.clangd.setup { on_attach = custom_attch }
