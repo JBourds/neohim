@@ -14,6 +14,15 @@ vim.keymap.set("n", "<leader>wbw", "bi{<C-c>ea}<C-c>%i", { noremap = true, silen
 vim.keymap.set("n", "<leader>wbW", "Bi{<C-c>Ea}<C-c>%i", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>wbl", "^i{<C-c>$a}<C-c>%i", { noremap = true, silent = true })
 
+-- Easier to delete without overwriting default refister
+vim.keymap.set("v", "<leader>d", "\"_d", { noremap = true, silent = true })
+
+-- "Fix" (delete into blackhole and replace with buffer)
+-- In normal mode, use heuristic to go to end of word
+-- In visual mode, do it on highlighted text
+vim.keymap.set("n", "f", "\"_dep", { noremap = true, silent = true })
+vim.keymap.set("v", "f", "\"_dp", { noremap = true, silent = true })
+
 -- Easier macro replay
 vim.keymap.set("n", ".", "@@", { noremap = true, silent = true })
 
