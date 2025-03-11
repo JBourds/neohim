@@ -79,3 +79,38 @@ end)
 vim.keymap.set({ "n" }, "<leader>du", function()
     require('hex').dump()
 end)
+
+-- Debug keybindings (https://github.com/letsgetrusty/neovim-rust/)
+vim.keymap.set("n", "<leader>ds", "<cmd>lua require'dap'.step_over()<CR>", { desc = "Debugger step over" })
+vim.keymap.set("n", "<leader>di", "<cmd>lua require'dap'.step_into()<CR>", { desc = "Debugger step into" })
+vim.keymap.set("n", "<leader>do", "<cmd>lua require'dap'.step_out()<CR>", { desc = "Debugger step out" })
+vim.keymap.set("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<CR>",
+    { desc = "Debugger toggle breakpoint" })
+local debug_called = false
+
+vim.keymap.set("n", "<leader>dc", function()
+    if not debug_called then
+        -- Try calling RustLsp debuggables only the first time
+        local success = pcall(vim.cmd.RustLsp, "debuggables")
+        if success then
+            debug_called = true
+        else
+            -- If RustLsp fails, fall back to DapContinue
+            vim.cmd.DapContinue()
+        end
+    else
+        -- After the first call, just continue debugging
+        vim.cmd.DapContinue()
+    end
+end)
+vim.keymap.set(
+    "n",
+    "<leader>scb",
+    "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
+    { desc = "Debugger set conditional breakpoint" }
+)
+vim.keymap.set("n", "<leader>dq", "<cmd>lua require'dap'.terminate()<CR>", { desc = "Debugger Quit" })
+vim.keymap.set("n", "<leader>dr", "<cmd>lua require'dap'.run_last()<CR>", { desc = "Debugger Restart" })
+
+-- rustaceanvim
+vim.keymap.set("n", "<leader>dt", "<cmd>lua vim.cmd('RustTest')<CR>", { desc = "Debugger testables" })

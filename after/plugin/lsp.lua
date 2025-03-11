@@ -57,6 +57,16 @@ cmp.setup.cmdline(':', {
 -- Set up lspconfig
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
+-- Ignore annoying 32802 error from typing fast
+for _, method in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) do
+    local default_diagnostic_handler = vim.lsp.handlers[method]
+    vim.lsp.handlers[method] = function(err, result, context, config)
+        if err ~= nil and err.code == -32802 then
+            return
+        end
+        return default_diagnostic_handler(err, result, context, config)
+    end
+end
 
 local function map(mode, lhs, rhs, opts)
     opts = opts or { noremap = true, silent = true }
@@ -88,6 +98,12 @@ local custom_attach = function(client)
     map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 end
 
+vim.g.rustaceanvim = {
+    server = {
+        on_attach = custom_attach
+    }
+}
+
 -- Diagnostic configuration
 vim.diagnostic.config({
     virtual_text = true, -- Disable virtual text
@@ -102,65 +118,7 @@ vim.diagnostic.config({
 -- Let us see diagnostic information displayed where it doesn't go off screen
 map('n', '?', '<cmd>lua vim.diagnostic.open_float(nul, { focusable = false })<CR>')
 
-local expand_macro = function()
-    vim.lsp.buf_request_all(0, "rust-analyzer/expandMacro",
-        vim.lsp.util.make_position_params(),
-        function(result)
-            -- Create a new tab
-            vim.cmd("vsplit")
-
-            -- Create an empty scratch buffer (non-listed, non-file i.e scratch)
-            -- :help nvim_create_buf
-            local buf = vim.api.nvim_create_buf(false, true)
-
-            -- and set it to the current window
-            -- :help nvim_win_set_buf
-            vim.api.nvim_win_set_buf(0, buf)
-
-            if result then
-                -- set the filetype to rust so that rust's syntax highlighting works
-                -- :help nvim_set_option_value
-                vim.api.nvim_set_option_value("filetype", "rust", { buf = 0 })
-
-                -- Insert the result into the new buffer
-                for client_id, res in pairs(result) do
-                    if res and res.result and res.result.expansion then
-                        -- :help nvim_buf_set_lines
-                        vim.api.nvim_buf_set_lines(buf, -1, -1, false, vim.split(res.result.expansion, "\n"))
-                    else
-                        vim.api.nvim_buf_set_lines(buf, -1, -1, false, {
-                            "No expansion available."
-                        })
-                    end
-                end
-            else
-                vim.api.nvim_buf_set_lines(buf, -1, -1, false, {
-                    "Error: No result returned."
-                })
-            end
-        end)
-end
-
 lspconfig.pyright.setup { on_attach = custom_attach }
-lspconfig.lua_ls.setup {}
-lspconfig.rust_analyzer.setup {
-    capabilities = capabilities, commands = {
-    ExpandMacro = { expand_macro } },
-    settings = {
-        ["rust-analyzer"] = {
-            -- Other Settings ...
-            procMacro = {
-                ignored = {
-                    leptos_macro = {
-                        -- optional: --
-                        -- "component",
-                        "server",
-                    },
-                },
-            },
-        },
-    },
-    on_attach = custom_attach
-}
+lspconfig.lua_ls.setup { on_attach = custom_attach }
 lspconfig.vale_ls.setup { on_attach = custom_attach }
 lspconfig.clangd.setup { on_attach = custom_attch }
