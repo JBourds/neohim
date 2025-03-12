@@ -16,6 +16,13 @@ return require("packer").startup(function(use)
     use("mfussenegger/nvim-lint")
     use("stevearc/conform.nvim")
 
+    -- Jupyter Notebook
+    use {
+        "benlubas/molten-nvim",
+        version = "2.0.0",
+        run = ":UpdateRemotePlugins",
+    }
+
     use {
         "jay-babu/mason-nvim-dap.nvim",
         config = require("mason-nvim-dap").setup({
@@ -36,7 +43,6 @@ return require("packer").startup(function(use)
                 }
             end
         end
-
     }
 
     -- Autocompletion
