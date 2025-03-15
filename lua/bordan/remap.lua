@@ -36,12 +36,15 @@ end, { noremap = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 
+-- Collapse next line into end of current line
 vim.keymap.set("n", "J", "mzJ`z")
+
 -- Quicker paging with cursor staying in place
 vim.keymap.set("n", "<C-j>", "<C-d>zz")
 vim.keymap.set("n", "<C-k>", "<C-u>zz")
 
--- Some kind of pattern matching?
+-- Get the nth occurence of the latest "/" or "?" search (on whole selection
+-- rather than just the word matched by * and #)
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
@@ -51,17 +54,6 @@ vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 -- Easier to leave insert mode
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
-vim.keymap.set("n", "Q", "<nop>")
-vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux new tmux-sessionizer<CR>")
--- Keymap for manual formatting
-vim.keymap.set({ "n", "v" }, "<leader>f", function()
-    require('conform').format({
-        lsp_fallback = true,
-        async = false,
-        timeout_ms = 500,
-    })
-end, { desc = "Format file or range (in visual mode)" })
-
 -- Auto-format on save
 vim.api.nvim_create_autocmd("BufWritePre", {
     callback = function(args)
@@ -70,10 +62,10 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 -- Hex dump commands
-vim.keymap.set({ "n" }, "<leader>dt", function()
+vim.keymap.set({ "n" }, "<leader>ht", function()
     require('hex').toggle()
 end)
-vim.keymap.set({ "n" }, "<leader>da", function()
+vim.keymap.set({ "n" }, "<leader>ha", function()
     require('hex').assemble()
 end)
 vim.keymap.set({ "n" }, "<leader>du", function()

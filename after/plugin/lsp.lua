@@ -7,34 +7,20 @@ cmp.setup({
         end,
     },
     window = {
-        -- Uncomment to use bordered windows
-        -- completion = cmp.config.window.bordered(),
-        -- documentation = cmp.config.window.bordered(),
     },
     mapping = cmp.mapping.preset.insert({
-        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-j>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-k>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Enter>'] = cmp.mapping.complete(),
         ['<C-e>'] = cmp.mapping.abort(),
-        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item.
+        ['<CR>'] = cmp.mapping.confirm({ select = true }),
     }),
     sources = cmp.config.sources({
         { name = 'nvim_lsp' },
-        -- { name = 'vsnip' }, -- Uncomment for `vsnip` users
     }, {
         { name = 'buffer' },
     })
 })
-
--- Optional: Uncomment and configure if using git with cmp
--- require("cmp_git").setup()
--- cmp.setup.filetype('gitcommit', {
---   sources = cmp.config.sources({
---     { name = 'git' },
---   }, {
---     { name = 'buffer' },
---   })
--- })
 
 -- Configure cmdline sources
 cmp.setup.cmdline({ '/', '?' }, {
@@ -68,16 +54,15 @@ for _, method in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) d
     end
 end
 
+-- lspconfig keybinds
 local function map(mode, lhs, rhs, opts)
     opts = opts or { noremap = true, silent = true }
     vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
 end
 
 local lspconfig = require('lspconfig')
-
 local custom_attach = function(client)
     print("LSP started.");
-
     map('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>')
     map('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>')
     map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>')
@@ -98,11 +83,40 @@ local custom_attach = function(client)
     map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 end
 
+-- Make this plugin work the same as other LSPs
 vim.g.rustaceanvim = {
     server = {
         on_attach = custom_attach
     }
 }
+local bufnr = vim.api.nvim_get_current_buf()
+vim.keymap.set(
+    "n",
+    "K", -- Override Neovim's built-in hover keymap with rustaceanvim's hover actions
+    function()
+        vim.cmd.RustLsp({ 'hover', 'actions' })
+    end,
+    { silent = true, buffer = bufnr }
+)
+
+-- Diagnostic configuration
+vim.diagnostic.config({
+    virtual_text = true,
+    signs = true,
+    float = {
+        show_header = true,
+        source = "always",
+        border = "rounded",
+    },
+})
+
+-- Let us see diagnostic information displayed where it doesn't go off screen
+map('n', '?', '<cmd>lua vim.diagnostic.open_float(nul, { focusable = false })<CR>')
+
+lspconfig.pyright.setup { on_attach = custom_attach }
+lspconfig.lua_ls.setup { on_attach = custom_attach }
+lspconfig.vale_ls.setup { on_attach = custom_attach }
+lspconfig.clangd.setup { on_attach = custom_attch }
 
 -- Diagnostic configuration
 vim.diagnostic.config({
@@ -114,11 +128,3 @@ vim.diagnostic.config({
         border = "rounded", -- Border style for the float
     },
 })
-
--- Let us see diagnostic information displayed where it doesn't go off screen
-map('n', '?', '<cmd>lua vim.diagnostic.open_float(nul, { focusable = false })<CR>')
-
-lspconfig.pyright.setup { on_attach = custom_attach }
-lspconfig.lua_ls.setup { on_attach = custom_attach }
-lspconfig.vale_ls.setup { on_attach = custom_attach }
-lspconfig.clangd.setup { on_attach = custom_attch }
