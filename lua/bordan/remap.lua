@@ -24,7 +24,8 @@ vim.keymap.set("i", "<C-c>", "<Esc>")
 
 -- Auto-format on save
 vim.api.nvim_create_autocmd("BufWritePre", {
-    callback = function(args)
-        require("conform").format({ bufnr = args.buf })
-    end,
+	callback = function(args)
+		require("conform").format({ bufnr = args.buf })
+	end,
 })
+
