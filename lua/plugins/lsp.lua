@@ -143,6 +143,7 @@ return {
 				"clangd",
 				"gopls",
 				"sqls",
+				"hyprls",
 				-- Formatters
 				"black",
 				"clang-format",
