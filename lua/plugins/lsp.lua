@@ -1,4 +1,50 @@
 return {
+	-- Nice autocomplete of paired characters
+	{
+		"echasnovski/mini.pairs",
+		version = "*",
+		config = function()
+			require("mini.pairs").setup()
+		end,
+	},
+
+	{
+		"hrsh7th/nvim-cmp",
+
+		dependencies = { "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-vsnip", "hrsh7th/vim-vsnip" },
+		config = function()
+			local cmp = require("cmp")
+			cmp.setup({
+				snippet = {
+					expand = function(args)
+						vim.fn["vsnip#anonymous"](args.body)
+					end,
+				},
+				window = {},
+				mapping = cmp.mapping.preset.insert({
+					["<C-j>"] = cmp.mapping.scroll_docs(-4),
+					["<C-k>"] = cmp.mapping.scroll_docs(4),
+					["<C-Enter>"] = cmp.mapping.complete(),
+					["<C-e>"] = cmp.mapping.abort(),
+					["<CR>"] = cmp.mapping.confirm({ select = true }),
+				}),
+				sources = cmp.config.sources({
+					{ name = "nvim_lsp" },
+				}, {
+					{ name = "buffer" },
+				}),
+			})
+
+			-- Set up lspconfig
+			require("cmp_nvim_lsp").default_capabilities()
+		end,
+	},
+
+	{
+		"echasnovski/mini.icons",
+		version = "*",
+	},
+
 	{
 		"neovim/nvim-lspconfig",
 		config = function()
