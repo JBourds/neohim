@@ -27,6 +27,7 @@ return {
 			cpp = { "clangd-format" },
 			go = { "gofumpt", "goimports" },
 			sql = { "sqlfmt", "pgformatter" },
+			markdown = { "markdownlint" },
 		},
 		-- Set default options
 		default_format_opts = {
