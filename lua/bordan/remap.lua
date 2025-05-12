@@ -29,3 +29,5 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	end,
 })
 
+-- Undotree
+vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
