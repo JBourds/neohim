@@ -167,6 +167,8 @@ return {
 				"stylua",
 				"shellcheck",
 				"sqlfluff",
+				-- Something inbetween
+				"tinymist",
 			},
 			auto_update = true,
 			run_on_start = true,
