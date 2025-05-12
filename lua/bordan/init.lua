@@ -1,7 +1,5 @@
--- require("bordan.remap")
--- require("bordan.set")
--- require("mason").setup()
--- require("mason-nvim-dap").setup()
+require("bordan.remap")
+require("bordan.options")
 
 vim.cmd("colorscheme kanagawa-wave")
 vim.g.mkdp_theme = "dark"
