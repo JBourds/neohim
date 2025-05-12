@@ -4,8 +4,14 @@ vim.g.mapleader = " "
 -- Easy explor
 vim.keymap.set("n", "<leader>pv", vim.cmd.Explore)
 
--- Delete without overwriting default register
-vim.keymap.set("v", "<leader>d", "\"_d", { noremap = true, silent = true })
+-- My own super special motions which allow me to avoid clobbering the system
+-- clipboard when deleting a text object
+vim.keymap.set("n", "<leader>d", '"_d', { noremap = true })
+vim.keymap.set("v", "<leader>d", '"_d', { noremap = true })
+
+-- Overwrite visually selected text without copying it into yank buffer
+-- TODO: Make a version of this which accepts a motion in normal mode.
+vim.keymap.set("v", "<leader>f", '"_dp', { noremap = true })
 
 -- Move highlighted region under/over next line
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
