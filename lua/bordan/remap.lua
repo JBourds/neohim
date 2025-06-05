@@ -1,7 +1,4 @@
--- Goated mapleader
-vim.g.mapleader = " "
-
--- Easy explor
+-- Easy explore
 vim.keymap.set("n", "<leader>pv", vim.cmd.Explore)
 
 -- My own super special motions which allow me to avoid clobbering the system
@@ -16,6 +13,29 @@ vim.keymap.set("v", "<leader>f", '"_dp', { noremap = true })
 -- Move highlighted region under/over next line
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+
+-- Easier tab control
+vim.keymap.set("n", "<C-k>", "<C-t>", { noremap = true, desc = "Remap default tag stack jumping" })
+vim.keymap.set("n", "<C-t>n", function()
+	vim.cmd("tab split")
+end, { noremap = true, desc = "'n' for splitting a tab like a windo" })
+
+vim.keymap.set("n", "<C-t>d", function()
+	vim.cmd("tabclose")
+end, { noremap = true, desc = "'d' for deleting a tab" })
+
+vim.keymap.set("n", "<C-t>h", function()
+	vim.cmd("-tabnext")
+end, { noremap = true, desc = "Go back one tab" })
+vim.keymap.set("n", "<C-t>l", function()
+	vim.cmd("+tabnext")
+end, { noremap = true, desc = "Go forward one tab" })
+vim.keymap.set("n", "<C-t>0", function()
+	vim.cmd("1tabnext")
+end, { noremap = true, desc = "Go to the first tab" })
+vim.keymap.set("n", "<C-t>$", function()
+	vim.cmd("$tabnext")
+end, { noremap = true, desc = "Go to the last tab" })
 
 -- Collapse next line into end of current line
 vim.keymap.set("n", "J", "mzJ`z")
