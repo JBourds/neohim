@@ -50,6 +50,9 @@ return {
 		config = function()
 			local lspconfig = require("lspconfig")
 
+			-- Make SQL omni complete key different
+			vim.g.ftplugin_sql_omni_key = 0
+
 			vim.diagnostic.config({
 				virtual_text = true,
 				signs = true,
@@ -92,11 +95,16 @@ return {
 
 			-- Setup individual language servers
 			local servers = {
+				astro = {},
+				prettier = {},
+				prettierd = {},
 				rust_analyzer = {},
 				pyright = {},
 				lua_ls = {},
 				vale_ls = {},
 				clangd = {},
+				gopls = {},
+				sqls = {},
 			}
 
 			for name, config in pairs(servers) do
@@ -120,6 +128,9 @@ return {
 		opts = {
 			automatic_installation = true,
 			ensure_installed = {
+				"astro",
+				"prettier",
+				"prettierd",
 				"rust_analyzer",
 				"pyright",
 				"lua_ls",
@@ -136,6 +147,9 @@ return {
 		opts = {
 			ensure_installed = {
 				-- LSP servers
+				"prettier",
+				"astro-language-server",
+				"harper-ls",
 				"rust_analyzer",
 				"pyright",
 				"lua-language-server",
