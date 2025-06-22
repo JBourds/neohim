@@ -67,11 +67,10 @@ return {
 				vim.diagnostic.open_float(nil, { focusable = false })
 			end, { silent = true, desc = "Show diagnostic float" })
 
-			local function on_attach(_, bufnr)
+			local function on_attach(client, bufnr)
 				local map = function(mode, lhs, rhs, desc)
 					vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
 				end
-
 				map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
 				map("n", "gd", vim.lsp.buf.definition, "Go to definition")
 				map("n", "K", vim.lsp.buf.hover, "Hover documentation")
@@ -97,14 +96,12 @@ return {
 			local servers = {
 				astro = {},
 				prettier = {},
-				prettierd = {},
 				rust_analyzer = {},
 				pyright = {},
 				lua_ls = {},
 				vale_ls = {},
 				clangd = {},
 				gopls = {},
-				sqls = {},
 			}
 
 			for name, config in pairs(servers) do
@@ -129,15 +126,12 @@ return {
 			automatic_installation = true,
 			ensure_installed = {
 				"astro",
-				"prettier",
-				"prettierd",
 				"rust_analyzer",
 				"pyright",
 				"lua_ls",
 				"vale_ls",
 				"clangd",
 				"gopls",
-				"sqls",
 			},
 		},
 	},
@@ -156,7 +150,6 @@ return {
 				"vale_ls",
 				"clangd",
 				"gopls",
-				"sqls",
 				"hyprls",
 				-- Formatters
 				"black",
@@ -164,10 +157,8 @@ return {
 				"gofumpt",
 				"goimports",
 				"isort",
-				"pgformatter",
 				"ruff",
 				"shfmt",
-				"sqlfmt",
 				"stylua",
 				"typstyle",
 				-- Linters

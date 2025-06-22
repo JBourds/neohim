@@ -26,7 +26,7 @@ return {
 			c = { "clangd-format" },
 			cpp = { "clangd-format" },
 			go = { "gofumpt", "goimports" },
-			sql = { "sqlfmt", "pgformatter" },
+			sql = { "pgformatter" },
 			markdown = { "markdownlint" },
 		},
 		-- Set default options
@@ -39,6 +39,10 @@ return {
 		formatters = {
 			shfmt = {
 				prepend_args = { "-i", "2" },
+			},
+			pg_format = {
+				args = { "--keyword-case", "UPPER" },
+				stdin = true,
 			},
 		},
 	},
