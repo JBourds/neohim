@@ -94,8 +94,9 @@ return {
 
 			-- Setup individual language servers
 			local servers = {
-                tailwindcss-language-server = {},
-                astro-language-server = {},
+				tailwindcss_language_server = {},
+				typescript_language_server = {},
+				astro_language_server = {},
 				astro = {},
 				prettier = {},
 				rust_analyzer = {},
@@ -146,6 +147,7 @@ return {
 				"prettier",
 				"astro-language-server",
 				"tailwindcss-language-server",
+				"typescript-language-server",
 				"harper-ls",
 				"rust_analyzer",
 				"pyright",
