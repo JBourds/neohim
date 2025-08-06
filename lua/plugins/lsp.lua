@@ -148,7 +148,6 @@ return {
 				"astro-language-server",
 				"tailwindcss-language-server",
 				"typescript-language-server",
-				"harper-ls",
 				"rust_analyzer",
 				"pyright",
 				"lua-language-server",
