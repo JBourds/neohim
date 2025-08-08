@@ -1,13 +1,4 @@
 return {
-	-- Nice autocomplete of paired characters
-	{
-		"echasnovski/mini.pairs",
-		version = "*",
-		config = function()
-			require("mini.pairs").setup()
-		end,
-	},
-
 	{
 		"hrsh7th/nvim-cmp",
 
