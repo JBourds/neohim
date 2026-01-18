@@ -64,6 +64,7 @@ return {
                 end
                 map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
                 map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+                map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
                 map("n", "K", vim.lsp.buf.hover, "Hover documentation")
                 map("n", "gr", vim.lsp.buf.references, "References")
                 map("n", "gs", vim.lsp.buf.signature_help, "Signature help")
@@ -76,10 +77,8 @@ return {
                 map("n", "<leader>ar", vim.lsp.buf.rename, "Rename")
                 map("n", "<leader>=", function()
                     vim.lsp.buf.format({ async = true })
-                end, "Format file")
-                map("n", "<leader>ai", vim.lsp.buf.incoming_calls, "Incoming calls")
-                map("n", "<leader>ao", vim.lsp.buf.outgoing_calls, "Outgoing calls")
-                map("n", "[d", vim.diagnostic.goto_prev, "Previous diagnostic")
+                end, "Format")
+                map("n", "[d", vim.diagnostic.goto_prev, "Prev diagnostic")
                 map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
             end
 
