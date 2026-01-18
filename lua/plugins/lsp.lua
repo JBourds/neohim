@@ -40,9 +40,7 @@ return {
         "neovim/nvim-lspconfig",
         config = function()
             local lspconfig = require("lspconfig")
-
-            -- Make SQL omni complete key different
-            vim.g.ftplugin_sql_omni_key = 0
+            local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
             vim.diagnostic.config({
                 virtual_text = true,
@@ -82,7 +80,6 @@ return {
                 map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
             end
 
-            -- Setup individual language servers
             local servers = {
                 rust_analyzer = {},
                 pyright = {},
@@ -92,10 +89,25 @@ return {
 
             for name, config in pairs(servers) do
                 config.on_attach = on_attach
+                config.capabilities = capabilities
                 lspconfig[name].setup(config)
             end
+
+            lspconfig.clangd.setup({
+                on_attach = on_attach,
+                capabilities = capabilities,
+                cmd = {
+                    "clangd",
+                    "--background-index",
+                    "--clang-tidy",
+                    "--completion-style=detailed",
+                    "--header-insertion=never",
+                    "--query-driver=**/arm-none-eabi-*",
+                },
+            })
         end,
-    },
+    }
+    ,
 
     {
         "williamboman/mason.nvim",
@@ -111,8 +123,6 @@ return {
         opts = {
             automatic_installation = true,
             ensure_installed = {
-                "astro",
-                "rust_analyzer",
                 "pyright",
                 "lua_ls",
                 "gopls",
@@ -126,10 +136,8 @@ return {
             ensure_installed = {
                 -- LSP servers
                 "prettier",
-                "astro-language-server",
                 "tailwindcss-language-server",
                 "typescript-language-server",
-                "rust_analyzer",
                 "pyright",
                 "lua-language-server",
                 "gopls",
