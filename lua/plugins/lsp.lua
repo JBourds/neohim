@@ -39,7 +39,6 @@ return {
     {
         "neovim/nvim-lspconfig",
         config = function()
-            local lspconfig = require("lspconfig")
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
             vim.diagnostic.config({
@@ -90,21 +89,33 @@ return {
             for name, config in pairs(servers) do
                 config.on_attach = on_attach
                 config.capabilities = capabilities
-                lspconfig[name].setup(config)
+                if vim.lsp.config[name].setup then
+                    vim.lsp.config[name].setup(config)
+                end
             end
 
-            lspconfig.clangd.setup({
-                on_attach = on_attach,
-                capabilities = capabilities,
-                cmd = {
-                    "clangd",
-                    "--background-index",
-                    "--clang-tidy",
-                    "--completion-style=detailed",
-                    "--header-insertion=never",
-                    "--query-driver=**/arm-none-eabi-*",
-                },
-            })
+            vim.lsp.clangd = {
+                setup = {
+                    on_attach = on_attach,
+                    capabilities = capabilities,
+                    cmd = {
+                        "clangd",
+                        "--background-index",
+                        "--clang-tidy",
+                        "--completion-style=detailed",
+                        "--header-insertion=never",
+                        "--query-driver=**/arm-none-eabi-*",
+                        "-Wall",
+                        "-Wextra",
+                        "-Wshadow",
+                        "-Wconversion",
+                        "-Wfloat-equal",
+                        "-Wno-unused-const-variable",
+                        "-Wno-sign-conversion",
+                        "-std=c++17",
+                    },
+                }
+            }
         end,
     }
     ,
