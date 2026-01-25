@@ -88,6 +88,10 @@ return {
 
             for _, config in pairs(servers) do
                 vim.lsp.enable(config)
+                vim.lsp.config(config, {
+                    on_attach = on_attach,
+                    capabilities = capabilities,
+                })
             end
 
             vim.lsp.clangd = {
