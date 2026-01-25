@@ -80,18 +80,14 @@ return {
             end
 
             local servers = {
-                rust_analyzer = {},
-                pyright = {},
-                lua_ls = {},
-                gopls = {},
+                "rust_analyzer",
+                "pyright",
+                "lua_ls",
+                "gopls",
             }
 
-            for name, config in pairs(servers) do
-                config.on_attach = on_attach
-                config.capabilities = capabilities
-                if vim.lsp.config[name].setup then
-                    vim.lsp.config[name].setup(config)
-                end
+            for _, config in pairs(servers) do
+                vim.lsp.enable(config)
             end
 
             vim.lsp.clangd = {
