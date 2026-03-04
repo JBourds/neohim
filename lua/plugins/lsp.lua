@@ -38,6 +38,7 @@ return {
 
     {
         "neovim/nvim-lspconfig",
+
         config = function()
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -81,8 +82,9 @@ return {
 
             local servers = {
                 "rust_analyzer",
-                "pyright",
+                "ruff",
                 "lua_ls",
+                "asm_lsp",
                 "gopls",
             }
 
@@ -93,6 +95,18 @@ return {
                     capabilities = capabilities,
                 })
             end
+
+            vim.lsp.config("asm_lsp", {
+                on_attach = on_attach,
+                capabilities = capabilities,
+                filetypes = { "rgbasm" },
+                root_markers = {},
+                settings = {
+                    asm = {
+                        dialect = "rgbasm",
+                    },
+                },
+            })
 
             vim.lsp.clangd = {
                 setup = {
@@ -134,8 +148,9 @@ return {
         opts = {
             automatic_installation = true,
             ensure_installed = {
-                "pyright",
+                "ruff",
                 "lua_ls",
+                "asm_lsp",
                 "gopls",
             },
         },
@@ -149,17 +164,14 @@ return {
                 "prettier",
                 "tailwindcss-language-server",
                 "typescript-language-server",
-                "pyright",
                 "lua-language-server",
                 "gopls",
                 "hyprls",
                 -- Formatters
-                "black",
                 "clang-format",
                 "gofumpt",
                 "goimports",
                 "isort",
-                "ruff",
                 "shfmt",
                 "typstyle",
                 -- Linters
@@ -167,7 +179,6 @@ return {
                 "cpplint",
                 "golangci-lint",
                 "markdownlint",
-                "ruff",
                 "golines",
                 "gomodifytags",
                 "gotests",
@@ -175,6 +186,7 @@ return {
                 "sqlfluff",
                 -- Something inbetween
                 "tinymist",
+                "ruff",
             },
             auto_update = true,
             run_on_start = true,
