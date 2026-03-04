@@ -16,23 +16,23 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 
 -- Mimic tmux window controls with neovim tabs
 vim.keymap.set("n", "<C-s>c", function()
-	vim.cmd("tab split")
+    vim.cmd("tab split")
 end, { noremap = true, desc = "'c' for splitting a tab like a tmux window" })
 vim.keymap.set("n", "<C-s>x", function()
-	vim.cmd("tabclose")
+    vim.cmd("tabclose")
 end, { noremap = true, desc = "'x' for deleting a tab like a tmux window" })
 
 vim.keymap.set("n", "<C-s>p", function()
-	vim.cmd("-tabnext")
+    vim.cmd("-tabnext")
 end, { noremap = true, desc = "Go back one tab" })
 vim.keymap.set("n", "<C-s>n", function()
-	vim.cmd("+tabnext")
+    vim.cmd("+tabnext")
 end, { noremap = true, desc = "Go forward one tab" })
 vim.keymap.set("n", "<C-s>0", function()
-	vim.cmd("1tabnext")
+    vim.cmd("1tabnext")
 end, { noremap = true, desc = "Go to the first tab" })
 vim.keymap.set("n", "<C-s>$", function()
-	vim.cmd("$tabnext")
+    vim.cmd("$tabnext")
 end, { noremap = true, desc = "Go to the last tab" })
 
 -- Collapse next line into end of current line
@@ -48,9 +48,9 @@ vim.keymap.set("i", "<C-c>", "<Esc>")
 
 -- Auto-format on save
 vim.api.nvim_create_autocmd("BufWritePre", {
-	callback = function(args)
-		require("conform").format({ bufnr = args.buf })
-	end,
+    callback = function(args)
+        require("conform").format({ bufnr = args.buf })
+    end,
 })
 
 -- Undotree
