@@ -97,13 +97,8 @@ return {
             })
 
             vim.lsp.config("asm_lsp", {
-                filetypes = { "rgbasm" },
-                root_markers = {},
-                settings = {
-                    asm = {
-                        dialect = "rgbasm",
-                    },
-                },
+                filetypes = { "asm", "rgbasm" },
+                root_markers = { ".asm-lsp.toml" },
             })
 
             vim.lsp.config("clangd", {
