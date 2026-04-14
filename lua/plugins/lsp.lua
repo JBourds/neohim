@@ -104,6 +104,7 @@ return {
 
             local servers = {
                 "rust_analyzer",
+                "basedpyright",
                 "ruff",
                 "lua_ls",
                 "asm_lsp",
@@ -148,6 +149,7 @@ return {
                 "tailwindcss-language-server",
                 "typescript-language-server",
                 "lua-language-server",
+                "basedpyright",
                 "gopls",
                 "hyprls",
                 -- Formatters
