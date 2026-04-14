@@ -94,7 +94,7 @@ return {
 
                     -- Document color
                     if client and client:supports_method("textDocument/documentColor") then
-                        vim.lsp.document_color.enable(true, bufnr)
+                        vim.lsp.document_color.enable(true, client)
                     end
 
                     -- Inline completion
