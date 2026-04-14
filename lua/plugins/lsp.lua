@@ -86,7 +86,9 @@ return {
                         map("n", "<leader>cl", vim.lsp.codelens.run, "Run codelens")
                         vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
                             buffer = bufnr,
-                            callback = vim.lsp.codelens.refresh,
+                            callback = function()
+                                vim.lsp.codelens.enable(true, { bufnr = bufnr })
+                            end,
                         })
                     end
 
