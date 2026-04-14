@@ -16,6 +16,7 @@ return {
             go = { "gofumpt", "goimports" },
             sql = { "pgformatter" },
             markdown = { "markdownlint" },
+            rust = { "rustfmt" },
         },
         -- Set default options
         default_format_opts = {
