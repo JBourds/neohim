@@ -59,6 +59,7 @@ return {
             vim.api.nvim_create_autocmd("LspAttach", {
                 callback = function(args)
                     local bufnr = args.buf
+                    local client = vim.lsp.get_client_by_id(args.data.client_id)
                     local map = function(mode, lhs, rhs, desc)
                         vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
                     end
@@ -79,6 +80,25 @@ return {
                     end, "Format")
                     map("n", "[d", vim.diagnostic.goto_prev, "Prev diagnostic")
                     map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
+
+                    -- Codelens
+                    if client and client:supports_method("textDocument/codeLens") then
+                        map("n", "<leader>cl", vim.lsp.codelens.run, "Run codelens")
+                        vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+                            buffer = bufnr,
+                            callback = vim.lsp.codelens.refresh,
+                        })
+                    end
+
+                    -- Document color
+                    if client and client:supports_method("textDocument/documentColor") then
+                        vim.lsp.document_color.enable(true, bufnr)
+                    end
+
+                    -- Inline completion
+                    if client and client:supports_method("textDocument/inlineCompletion") then
+                        vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
+                    end
                 end,
             })
 
