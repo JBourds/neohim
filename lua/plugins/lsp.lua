@@ -56,29 +56,31 @@ return {
                 vim.diagnostic.open_float(nil, { focusable = false })
             end, { silent = true, desc = "Show diagnostic float" })
 
-            local function on_attach(client, bufnr)
-                local map = function(mode, lhs, rhs, desc)
-                    vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
-                end
-                map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
-                map("n", "gd", vim.lsp.buf.definition, "Go to definition")
-                map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
-                map("n", "K", vim.lsp.buf.hover, "Hover documentation")
-                map("n", "gr", vim.lsp.buf.references, "References")
-                map("n", "gs", vim.lsp.buf.signature_help, "Signature help")
-                map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
-                map("n", "gt", vim.lsp.buf.type_definition, "Type definition")
-                map("n", "<leader>gw", vim.lsp.buf.document_symbol, "Document symbols")
-                map("n", "<leader>gW", vim.lsp.buf.workspace_symbol, "Workspace symbols")
-                map("n", "<leader>ah", vim.lsp.buf.hover, "Hover help")
-                map("n", "<leader>af", vim.lsp.buf.code_action, "Code action")
-                map("n", "<leader>ar", vim.lsp.buf.rename, "Rename")
-                map("n", "<leader>=", function()
-                    vim.lsp.buf.format({ async = true })
-                end, "Format")
-                map("n", "[d", vim.diagnostic.goto_prev, "Prev diagnostic")
-                map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
-            end
+            vim.api.nvim_create_autocmd("LspAttach", {
+                callback = function(args)
+                    local bufnr = args.buf
+                    local map = function(mode, lhs, rhs, desc)
+                        vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
+                    end
+                    map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
+                    map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+                    map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
+                    map("n", "K", vim.lsp.buf.hover, "Hover documentation")
+                    map("n", "gr", vim.lsp.buf.references, "References")
+                    map("n", "gs", vim.lsp.buf.signature_help, "Signature help")
+                    map("n", "gt", vim.lsp.buf.type_definition, "Type definition")
+                    map("n", "<leader>gw", vim.lsp.buf.document_symbol, "Document symbols")
+                    map("n", "<leader>gW", vim.lsp.buf.workspace_symbol, "Workspace symbols")
+                    map("n", "<leader>ah", vim.lsp.buf.hover, "Hover help")
+                    map("n", "<leader>af", vim.lsp.buf.code_action, "Code action")
+                    map("n", "<leader>ar", vim.lsp.buf.rename, "Rename")
+                    map("n", "<leader>=", function()
+                        vim.lsp.buf.format({ async = true })
+                    end, "Format")
+                    map("n", "[d", vim.diagnostic.goto_prev, "Prev diagnostic")
+                    map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
+                end,
+            })
 
             local servers = {
                 "rust_analyzer",
@@ -86,19 +88,15 @@ return {
                 "lua_ls",
                 "asm_lsp",
                 "gopls",
+                "clangd",
+                "tinymist",
             }
 
-            for _, config in pairs(servers) do
-                vim.lsp.enable(config)
-                vim.lsp.config(config, {
-                    on_attach = on_attach,
-                    capabilities = capabilities,
-                })
-            end
+            vim.lsp.config("*", {
+                capabilities = capabilities,
+            })
 
             vim.lsp.config("asm_lsp", {
-                on_attach = on_attach,
-                capabilities = capabilities,
                 filetypes = { "rgbasm" },
                 root_markers = {},
                 settings = {
@@ -108,28 +106,17 @@ return {
                 },
             })
 
-            vim.lsp.clangd = {
-                setup = {
-                    on_attach = on_attach,
-                    capabilities = capabilities,
-                    cmd = {
-                        "clangd",
-                        "--background-index",
-                        "--clang-tidy",
-                        "--completion-style=detailed",
-                        "--header-insertion=never",
-                        "--query-driver=**/arm-none-eabi-*",
-                        "-Wall",
-                        "-Wextra",
-                        "-Wshadow",
-                        "-Wconversion",
-                        "-Wfloat-equal",
-                        "-Wno-unused-const-variable",
-                        "-Wno-sign-conversion",
-                        "-std=c++17",
-                    },
-                }
-            }
+            vim.lsp.config("clangd", {
+                cmd = {
+                    "clangd",
+                    "--background-index",
+                    "--clang-tidy",
+                },
+            })
+
+            for _, server in pairs(servers) do
+                vim.lsp.enable(server)
+            end
         end,
     }
     ,
@@ -139,27 +126,8 @@ return {
         build = ":MasonUpdate",
         config = function()
             require("mason").setup()
-        end,
-    },
 
-    {
-        "williamboman/mason-lspconfig.nvim",
-        dependencies = { "neovim/nvim-lspconfig", "williamboman/mason.nvim" },
-        opts = {
-            automatic_installation = true,
-            ensure_installed = {
-                "ruff",
-                "lua_ls",
-                "asm_lsp",
-                "gopls",
-            },
-        },
-    },
-
-    {
-        "WhoIsSethDaniel/mason-tool-installer.nvim",
-        opts = {
-            ensure_installed = {
+            local ensure_installed = {
                 -- LSP servers
                 "prettier",
                 "tailwindcss-language-server",
@@ -175,7 +143,6 @@ return {
                 "shfmt",
                 "typstyle",
                 -- Linters
-                "gofumpt",
                 "cpplint",
                 "golangci-lint",
                 "markdownlint",
@@ -185,11 +152,25 @@ return {
                 "shellcheck",
                 "sqlfluff",
                 -- Something inbetween
-                "tinymist",
                 "ruff",
-            },
-            auto_update = true,
-            run_on_start = true,
-        },
+                "tinymist",
+            }
+
+            local registry = require("mason-registry")
+            local function install_missing()
+                for _, name in ipairs(ensure_installed) do
+                    local ok, pkg = pcall(registry.get_package, name)
+                    if ok and not pkg:is_installed() then
+                        pkg:install()
+                    end
+                end
+            end
+
+            if registry.refresh then
+                registry.refresh(install_missing)
+            else
+                install_missing()
+            end
+        end,
     },
 }
