@@ -5,7 +5,7 @@ return {
             'nvim-telescope/telescope.nvim',
         },
         config = function()
-            require('livepreview.config').set()
+            require('livepreview.config').set({ dynamic_root = true })
         end
     },
     {
