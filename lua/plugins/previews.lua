@@ -1,12 +1,12 @@
 return {
     {
-        'brianhuster/live-preview.nvim',
-        dependencies = {
-            'nvim-telescope/telescope.nvim',
-        },
-        config = function()
-            require('livepreview.config').set({ dynamic_root = true })
-        end
+        "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        build = function() vim.fn["mkdp#util#install"]() end,
+        init = function()
+            vim.g.mkdp_filetypes = { "markdown" }
+        end,
+        ft = { "markdown" },
     },
     {
         "chomosuke/typst-preview.nvim",
