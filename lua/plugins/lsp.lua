@@ -113,6 +113,7 @@ return {
                 "gopls",
                 "clangd",
                 "tinymist",
+                "ts_ls"
             }
 
             vim.lsp.config("*", {
