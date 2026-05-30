@@ -19,6 +19,18 @@ return {
             markdown = { "markdownlint" },
         }
 
+        -- Only run eslint_d when the project actually has an eslint config and
+        -- the binary is installed. Avoids ENOENT in projects with neither.
+        local eslint_d = require("lint.linters.eslint_d")
+        eslint_d.condition = function(ctx)
+            local cfg = vim.fs.find({
+                ".eslintrc", ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json",
+                ".eslintrc.yml", ".eslintrc.yaml", "eslint.config.js",
+                "eslint.config.mjs", "eslint.config.cjs", "eslint.config.ts",
+            }, { path = ctx.dirname, upward = true })[1]
+            return cfg ~= nil and vim.fn.executable("eslint_d") == 1
+        end
+
         -- Avoid running the linter too frequently
         local function debounce(ms, fn)
             local timer = vim.uv.new_timer()
